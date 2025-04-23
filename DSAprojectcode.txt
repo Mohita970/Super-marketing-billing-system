@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+// Stack pointer
+int top = -1;
+// Item structure
+struct Item {
+ char name[50];
+ int quantity;
+ float price;
+};
+// Stack of items
+struct Item stack[MAX];
+// Push function to add item to cart
+void push(struct Item item) {
+ if (top >= MAX - 1) {
+ printf("Cart is full!\n");
+ return;
+ }
+ stack[++top] = item;
+ printf("Item added to cart successfully!\n");
+}
+// Pop function to remove last added item
+struct Item pop() {
+ if (top == -1) {
+ printf("Cart is empty!\n");
+ struct Item empty = {"", 0, 0.0};
+ return empty;
+ }
+ printf("Item removed from cart successfully!\n");
+ return stack[top--];
+}
+// Display all items in the cart
+void displayCart() {
+ if (top == -1) {
+ printf("Cart is empty!\n");
+ return;
+ }
+ printf("\nItems in your cart:\n");
+ printf("-----------------------------------------
+\n");
+ printf("%-20s %-10s %-10s\n", "Item Name", "Qty",
+"Price");
+ printf("-----------------------------------------
+\n");
+ for (int i = top; i >= 0; i--) {
+ printf("%-20s %-10d %-10.2f\n", stack[i].name,
+stack[i].quantity, stack[i].price);
+ }
+ printf("-----------------------------------------
+\n");
+}
+// Calculate and print total amount
+void calculateTotal() {
+ float total = 0.0;
+ if (top == -1) {
+ printf("Cart is empty!\n");
+ return;
+ }
+ for (int i = 0; i <= top; i++) {
+ total += stack[i].quantity * stack[i].price;
+ }
+ printf("Total Amount: ₹ %.2f\n", total);
+}
+int main() {
+ int choice;
+ struct Item item;
+ do {
+ printf("\n===== Supermarket Billing System
+=====\n");
+ printf("1. Add Item\n");
+ printf("2. Remove Last Item\n");
+ printf("3. Display Cart\n");
+ printf("4. Calculate Total\n");
+ printf("5. Exit\n");
+ printf("Enter your choice (1-5): ");
+ scanf("%d", &choice);
+ switch (choice) {
+ case 1:
+ printf("Enter item name: ");
+ scanf(" %[^\n]", item.name); // Reads
+string with spaces
+ printf("Enter quantity: ");
+ scanf("%d", &item.quantity);
+ printf("Enter price per item: ");
+ scanf("%f", &item.price);
+ push(item);
+ break;
+ case 2:
+ pop();
+ break;
+ case 3:
+ displayCart();
+ break;
+ case 4:
+ calculateTotal();
+ break;
+ case 5:
+ printf("Thank you for shopping with
+us!\n");
+ break;
+ default:
+ printf("Invalid choice, please select
+again.\n");
+ }
+ } while (choice != 5);
+ return 0;
+}
